@@ -10,7 +10,7 @@ A batch script which configure automatic driver updates provided by Windows 11.
 
 
 ## 🚀 Future Add Ons
-- I will be adding a ability to enable or disable The Updates Through Group Policy & System.cpl too
+- I will be adding a ability to enable or disable The Updates Through System.cpl too
 
 ## Screenshots
 
