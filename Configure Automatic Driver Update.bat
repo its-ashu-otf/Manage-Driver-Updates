@@ -1,7 +1,6 @@
 @echo off
-cls
 color 0a
-title Configure Driver Update Through Windows Update
+title Configure Driver Update Through Windows Update v2.0
 @set "ERRORLEVEL="
 @CMD /C EXIT 0
 @"%SYSTEMROOT%\system32\cacls.exe" "%SYSTEMROOT%\system32\config\system" >nul 2>&1
@@ -44,9 +43,14 @@ echo Deleting the Existing Registry Key...
 echo.
 REG DELETE HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\DriverSearching /f
 echo.
-echo Adding the new key which disables Automatic Driver Update
+echo Adding the new key in Registry which disables Automatic Driver Update...
 echo.
 REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\DriverSearching /v SearchOrderConfig /t REG_DWORD /d 0 /f
+echo.
+echo Editing Group Policy to Exclude Drivers in Windows Update 
+REG DELETE HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\WindowsUpdate\UpdatePolicy\PolicyState /v ExcludeWUDrivers /f 
+echo.
+REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\WindowsUpdate\UpdatePolicy\PolicyState /v ExcludeWUDrivers /t REG_DWORD /d 1 /f
 pause
 
 :op2
@@ -56,7 +60,12 @@ echo Deleting the Existing Registry Key...
 echo.
 REG DELETE HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\DriverSearching /f
 echo.
-echo Adding the new key which enables Automatic Driver Update
+echo Adding the new key in Registry which enables Automatic Driver Update
 echo.
 REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\DriverSearching /v SearchOrderConfig /t REG_DWORD /d 1 /f
+echo.
+echo Editing Group Policy to Include Drivers in Windows Update
+REG DELETE HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\WindowsUpdate\UpdatePolicy\PolicyState /v ExcludeWUDrivers /f 
+echo.
+REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\WindowsUpdate\UpdatePolicy\PolicyState /v ExcludeWUDrivers /t REG_DWORD /d 0 /f
 pause
