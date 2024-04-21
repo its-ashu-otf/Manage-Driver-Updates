@@ -1,13 +1,18 @@
 @echo off
 color 0a
 title Configure Driver Update Through Windows Update v2.0
-@set "ERRORLEVEL="
-@CMD /C EXIT 0
-@"%SYSTEMROOT%\system32\cacls.exe" "%SYSTEMROOT%\system32\config\system" >nul 2>&1
-@if NOT "%ERRORLEVEL%"=="0" (
-@powershell -Command Start-Process ""%0"" -Verb runAs 2>nul
-@exit
+:: Ensure admin privileges
+fltmc >nul 2>&1 || (
+    echo Administrator privileges are required.
+    PowerShell Start -Verb RunAs '%0' 2> nul || (
+        echo Right-click on the script and select "Run as administrator".
+        pause & exit 1
+    )
+    exit 0
 )
+:: Initialize environment
+setlocal EnableExtensions DisableDelayedExpansion
+
 :--------------------------------------
 :::
 :::  _____  _______   ____   _____    _____   _____   _____ __      __ ______  _____    _    _  _____   _____             _______  ______ 
@@ -37,35 +42,48 @@ echo Please Pick an option:
 goto begin
 
 :op1
-echo Disabling drivers download via Windows update...
-echo.
-echo Deleting the Existing Registry Key...
-echo.
-REG DELETE HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\DriverSearching /f
-echo.
-echo Adding the new key in Registry which disables Automatic Driver Update...
-echo.
-REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\DriverSearching /v SearchOrderConfig /t REG_DWORD /d 0 /f
-echo.
-echo Editing Group Policy to Exclude Drivers in Windows Update 
-REG DELETE HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\WindowsUpdate\UpdatePolicy\PolicyState /v ExcludeWUDrivers /f 
-echo.
-REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\WindowsUpdate\UpdatePolicy\PolicyState /v ExcludeWUDrivers /t REG_DWORD /d 1 /f
+:: ----------------------------------------------------------
+:: -------Disable Windows Update device driver search--------
+:: ----------------------------------------------------------
+echo --- Disable Windows Update device driver search
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\DriverSearching" /v "SearchOrderConfig" /t REG_DWORD /d 0 /f
+:: ----------------------------------------------------------
+
+
+:: ----------------------------------------------------------
+:: ----Disable inclusion of drivers with Windows updates-----
+:: ----------------------------------------------------------
+echo --- Disable inclusion of drivers with Windows updates
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" /v "ExcludeWUDriversInQualityUpdate" /t REG_DWORD /d 1 /f
+:: ----------------------------------------------------------
+
+
+:: Pause the script to view the final state
 pause
+:: Restore previous environment settings
+endlocal
+:: Exit the script successfully
+exit /b 0
 
 :op2
 echo Enabling drivers download via Windows update...
-echo.
-echo Deleting the Existing Registry Key...
-echo.
-REG DELETE HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\DriverSearching /f
-echo.
-echo Adding the new key in Registry which enables Automatic Driver Update
-echo.
-REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\DriverSearching /v SearchOrderConfig /t REG_DWORD /d 1 /f
-echo.
-echo Editing Group Policy to Include Drivers in Windows Update
-REG DELETE HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\WindowsUpdate\UpdatePolicy\PolicyState /v ExcludeWUDrivers /f 
-echo.
-REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\WindowsUpdate\UpdatePolicy\PolicyState /v ExcludeWUDrivers /t REG_DWORD /d 0 /f
+:: Disable inclusion of drivers with Windows updates (revert)
+echo --- Disable inclusion of drivers with Windows updates (revert)
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" /v "ExcludeWUDriversInQualityUpdate" /t REG_DWORD /d 0 /f
+:: ----------------------------------------------------------
+
+
+:: ----------------------------------------------------------
+:: ---Disable Windows Update device driver search (revert)---
+:: ----------------------------------------------------------
+echo --- Disable Windows Update device driver search (revert)
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\DriverSearching" /v "SearchOrderConfig" /t REG_DWORD /d 1 /f
+:: ----------------------------------------------------------
+
+
+:: Pause the script to view the final state
 pause
+:: Restore previous environment settings
+endlocal
+:: Exit the script successfully
+exit /b 0
