@@ -33,6 +33,8 @@ echo =============================================
 echo.
 echo 1) Disable Driver Update Offered By Windows
 echo 2) Enable Driver Update Offered By Windows
+echo =============================================
+echo.
 echo,
 set /p op=Type option:
 if "%op%"=="1" goto op1
