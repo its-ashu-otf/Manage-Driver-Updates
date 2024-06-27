@@ -6,11 +6,7 @@ A batch script which configure automatic driver updates provided by Windows 11.
 ## Features
 - Can Enable The Driver Update & Can Also Disable Them
 - Works on Windows Home Edition Too because it simply uses registry editor.
-- Useful for AMD users in cases where their driver gets automatically updated by Windows Update.
-
-
-## 🚀 Future Add Ons
-- I will be adding a ability to enable or disable The Updates Through System.cpl too
+- Useful for AMD users in cases where their driver gets automatically updated by Windows Update. 
 
 ## Screenshots
 
