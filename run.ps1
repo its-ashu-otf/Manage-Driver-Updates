@@ -1,3 +1,7 @@
+ Write-Host "================================================="
+ Write-Host "---  Windows Update Manager by @its-ashu-otf  ---"
+ Write-Host"================================================="
+
  Write-Host "Disabling driver offering through Windows Update..."
         If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Device Metadata")) {
             New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Device Metadata" -Force | Out-Null
@@ -13,10 +17,6 @@
             New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" | Out-Null
         }
         Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" -Name "ExcludeWUDriversInQualityUpdate" -Type DWord -Value 1
-        Write-Host "Disabling Windows Update automatic restart..."
-        If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU")) {
-            New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" -Force | Out-Null
-        }
 
         Write-Host "================================="
         Write-Host "---  Disabled Driver Updates  ---"
