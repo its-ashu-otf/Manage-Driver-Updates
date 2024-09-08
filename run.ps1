@@ -1,6 +1,6 @@
  Write-Host "================================================="
  Write-Host "---  Windows Update Manager by @its-ashu-otf  ---"
- Write-Host"================================================="
+ Write-Host "================================================="
 
  Write-Host "Disabling driver offering through Windows Update..."
         If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Device Metadata")) {
