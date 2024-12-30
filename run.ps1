@@ -48,26 +48,24 @@ try {
         exit
     }
 
-    Write-Output "Internet connection confirmed."
-
     # Check if running with admin privileges
     if (-not (IsAdmin)) {
-        Write-Output "This script needs to be run as an administrator."
+        Write-Output "This script needs to be run as an administrator." -ForegroundColor Red
         Write-Host "Please restart this script with elevated privileges (Run as Administrator)." -ForegroundColor Yellow
         pause
         exit
     }
 
     # Inform the user about the download process
-    Write-Output "Downloading the batch script to the temporary directory..."
+    Write-Output "Fetching the Stop Driver Update to the temporary directory..." -ForegroundColor Green
     Invoke-WebRequest -Uri $batchScriptUrl -OutFile $localFilePath -ErrorAction Stop
 
     # Check if the script was downloaded successfully
     if (Test-Path $localFilePath) {
-        Write-Output "Batch script downloaded successfully to $localFilePath."
+        Write-Output "Stop Driver Update script downloaded successfully to $localFilePath."
         
         # Execute the batch script with admin privileges
-        Write-Output "Executing the batch script with elevated privileges..."
+        Write-Output "Executing the Stop Driver Update script with elevated privileges..." -ForegroundColor Green
         ExecuteWithTerminal
 
         Write-Output "Batch script execution completed."
@@ -78,7 +76,7 @@ try {
     Write-Host "An error occurred: $_" -ForegroundColor Red
 } finally {
     # Clean up the downloaded file
-    Write-Output "Cleaning up temporary files..."
+    Write-Output "Cleaning up temporary files..." -ForegroundColor Yellow
     Cleanup
 }
 
