@@ -3,7 +3,13 @@
 
 A batch script which configure automatic driver updates provided by Windows 11.
 
+## Execution
 
+To run the script Paste this in Elevated Powershell
+
+```powershell
+irm https://raw.githubusercontent.com/its-ashu-otf/Manage-Automatic-Driver-Updates/refs/heads/main/run.ps1 | iex
+```
 ## Features
 - Can Enable The Driver Update & Can Also Disable Them
 - Works on Windows Home Edition Too because it simply uses registry editor.
