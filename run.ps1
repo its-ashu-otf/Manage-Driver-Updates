@@ -15,8 +15,41 @@ function IsAdmin {
     return ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")
 }
 
+# Function to check internet connectivity
+function Test-InternetConnection {
+    try {
+        # Try to reach a known public server (Google DNS)
+        $testConnection = Test-Connection -ComputerName "8.8.8.8" -Count 1 -Quiet
+        return $testConnection
+    } catch {
+        return $false
+    }
+}
+
+# Function to use Windows Terminal or fallback to cmd.exe
+function ExecuteWithTerminal {
+    $terminalPath = Get-Command "wt" -ErrorAction SilentlyContinue
+    if ($terminalPath) {
+        # Windows Terminal found
+        Write-Output "Windows Terminal found, using it to run the batch script..."
+        Start-Process -FilePath "wt.exe" -ArgumentList "cmd.exe /c `"$localFilePath`"" -Verb RunAs -Wait
+    } else {
+        # Fall back to cmd.exe if Windows Terminal is not found
+        Write-Output "Windows Terminal not found, falling back to cmd.exe..."
+        Start-Process -FilePath "cmd.exe" -ArgumentList "/c `"$localFilePath`"" -Verb RunAs -Wait
+    }
+}
+
 # Main script logic
 try {
+    # Check internet connectivity
+    if (-not (Test-InternetConnection)) {
+        Write-Host "No internet connectivity detected. Please check your network connection." -ForegroundColor Red
+        exit
+    }
+
+    Write-Output "Internet connection confirmed."
+
     # Check if running with admin privileges
     if (-not (IsAdmin)) {
         Write-Output "This script needs to be run as an administrator."
@@ -35,7 +68,7 @@ try {
         
         # Execute the batch script with admin privileges
         Write-Output "Executing the batch script with elevated privileges..."
-        Start-Process -FilePath "cmd.exe" -ArgumentList "/c `"$localFilePath`"" -Verb RunAs -Wait
+        ExecuteWithTerminal
 
         Write-Output "Batch script execution completed."
     } else {
@@ -48,3 +81,4 @@ try {
     Write-Output "Cleaning up temporary files..."
     Cleanup
 }
+
