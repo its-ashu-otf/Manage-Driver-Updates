@@ -11,7 +11,9 @@ irm https://raw.githubusercontent.com/its-ashu-otf/Manage-Automatic-Driver-Updat
 ## Features
 - Can Enable The Driver Update & Can Also Disable Them
 - Works on Windows Home Edition Too because it simply uses registry editor.
-- Useful for AMD users in cases where their driver gets automatically updated by Windows Update. 
+- Useful for AMD users in cases where their driver gets automatically updated by Windows Update.
+- Disables Windows Driver Update Server
+- Disables Hardware Info Collection By Microsoft
 
 ## Screenshots
 
