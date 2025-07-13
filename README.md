@@ -31,7 +31,7 @@ irm https://raw.githubusercontent.com/its-ashu-otf/Manage-Automatic-Driver-Updat
 
 > Here’s how the script looks when executed:
 
-![Script Screenshot](https://github.com/Its-Ashu/Manage-Driver-Updates-/assets/85825366/3723c88b-5e9d-4594-8664-2ef3e610ac66)
+<img width="1146" height="396" alt="image" src="https://github.com/user-attachments/assets/7c47f4c4-3784-48ef-9c75-8625b5c968bd" />
 
 ---
 
