@@ -1,6 +1,6 @@
 @echo off
 color 0a
-title Configure Driver Update Through Windows Update v6.0
+title Manage Driver Updates v6.0
 :: Ensure admin privileges
 fltmc >nul 2>&1 || (
     echo Administrator privileges are required.
