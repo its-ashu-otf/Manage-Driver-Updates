@@ -6,7 +6,7 @@ $localFilePath = "$env:TEMP\script.bat"
 function Cleanup {
     if (Test-Path $localFilePath) {
         Remove-Item -Path $localFilePath -Force
-        Write-Output "Temporary file cleaned up: $localFilePath"
+        Write-Host "Temporary file cleaned up: $localFilePath"
     }
 }
 
@@ -31,11 +31,11 @@ function ExecuteWithTerminal {
     $terminalPath = Get-Command "wt" -ErrorAction SilentlyContinue
     if ($terminalPath) {
         # Windows Terminal found
-        Write-Output "Windows Terminal found, using it to run the batch script..."
+        Write-Host "Windows Terminal found, using it to run the batch script..."
         Start-Process -FilePath "wt.exe" -ArgumentList "cmd.exe /c `"$localFilePath`"" -Verb RunAs -Wait
     } else {
         # Fall back to cmd.exe if Windows Terminal is not found
-        Write-Output "Windows Terminal not found, falling back to cmd.exe..."
+        Write-Host "Windows Terminal not found, falling back to cmd.exe..."
         Start-Process -FilePath "cmd.exe" -ArgumentList "/c `"$localFilePath`"" -Verb RunAs -Wait
     }
 }
@@ -50,33 +50,33 @@ try {
 
     # Check if running with admin privileges
     if (-not (IsAdmin)) {
-        Write-Output "This script needs to be run as an administrator." -ForegroundColor Red
+        Write-Host "This script needs to be run as an administrator." -ForegroundColor Red
         Write-Host "Please restart this script with elevated privileges (Run as Administrator)." -ForegroundColor Yellow
-        pause
+        Read-Host "Press Enter to exit..."
         exit
     }
 
     # Inform the user about the download process
-    Write-Output "Fetching the Stop Driver Update to the temporary directory..." -ForegroundColor Green
+    Write-Host "Fetching the Stop Driver Update to the temporary directory..." -ForegroundColor Green
     Invoke-WebRequest -Uri $batchScriptUrl -OutFile $localFilePath -ErrorAction Stop
 
     # Check if the script was downloaded successfully
     if (Test-Path $localFilePath) {
-        Write-Output "Stop Driver Update script downloaded successfully to $localFilePath."
+        Write-Host "Stop Driver Update script downloaded successfully to $localFilePath."
         
         # Execute the batch script with admin privileges
-        Write-Output "Executing the Stop Driver Update script with elevated privileges..." -ForegroundColor Green
+        Write-Host "Executing the Stop Driver Update script with elevated privileges..." -ForegroundColor Green
         ExecuteWithTerminal
 
-        Write-Output "Batch script execution completed."
+        Write-Host "Batch script execution completed."
     } else {
-        Write-Output "Failed to download the batch script. Please check the URL."
+        Write-Host "Failed to download the batch script. Please check the URL."
     }
 } catch {
     Write-Host "An error occurred: $_" -ForegroundColor Red
 } finally {
     # Clean up the downloaded file
-    Write-Output "Cleaning up temporary files..." -ForegroundColor Yellow
+    Write-Host "Cleaning up temporary files..." -ForegroundColor Yellow
     Cleanup
 }
 
