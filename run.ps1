@@ -1,5 +1,5 @@
 # Define the URL of the batch script from GitHub
-$batchScriptUrl = "https://raw.githubusercontent.com/its-ashu-otf/Manage-Automatic-Driver-Updates/refs/heads/main/Configure%20Automatic%20Driver%20Update.bat" # Replace with the raw URL of the batch file from GitHub
+$batchScriptUrl = "https://raw.githubusercontent.com/its-ashu-otf/Manage-Driver-Updates/refs/heads/main/Manage-Driver-Updates.bat" # Replace with the raw URL of the batch file from GitHub
 $localFilePath = "$env:TEMP\script.bat"
 
 # Function to clean up the downloaded batch script
