@@ -22,7 +22,7 @@ A powerful batch script to **enable or disable automatic driver updates** on **W
 Paste the following in an **elevated PowerShell** window:
 
 ```powershell
-irm https://raw.githubusercontent.com/its-ashu-otf/Manage-Automatic-Driver-Updates/refs/heads/main/run.ps1 | iex
+irm https://raw.githubusercontent.com/its-ashu-otf/Manage-Driver-Updates/main/run.ps1 | iex
 ```
 
 ---
